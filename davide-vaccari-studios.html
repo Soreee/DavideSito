@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Davide Vaccari Studios — Modena</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+/* ─── RESET & ROOT ─────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --white:#ffffff;
+  --off-white:#f8f7f5;
+  --black:#0c0c0c;
+  --charcoal:#1a1a1a;
+  --red:#c8000a;
+  --red-dark:#9e0008;
+  --gold:#b8935a;
+  --gray:#6b6b6b;
+  --gray-light:#ebebeb;
+  --display:'Playfair Display',Georgia,serif;
+  --body:'Inter',Helvetica,sans-serif;
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--white);color:var(--black);
+  font-family:var(--body);font-weight:300;line-height:1.6;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+
+/* ─── SCROLLBAR ─────────────────────────────────────────── */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--black)}
+::-webkit-scrollbar-thumb{background:var(--red)}
+
+/* ─── NAV ───────────────────────────────────────────────── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 52px;height:72px;
+  background:rgba(12,12,12,0.92);
+  backdrop-filter:blur(24px) saturate(160%);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  transition:background 0.3s;
+}
+nav.light{
+  background:rgba(255,255,255,0.94);
+  border-bottom:1px solid rgba(0,0,0,0.07);
+}
+.nav-logo-wrap{display:flex;align-items:center;gap:12px;text-decoration:none}
+.nav-logo-img{height:36px;width:auto;object-fit:contain}
+.nav-logo-text{
+  font-family:var(--display);font-size:1rem;font-weight:700;
+  color:var(--white);letter-spacing:-0.01em;white-space:nowrap;
+  transition:color 0.3s;
+}
+nav.light .nav-logo-text{color:var(--black)}
+.nav-links{display:flex;gap:28px;list-style:none;align-items:center}
+.nav-links a{
+  font-size:0.78rem;font-weight:500;letter-spacing:0.07em;text-transform:uppercase;
+  color:rgba(255,255,255,0.6);text-decoration:none;transition:color 0.2s;
+}
+nav.light .nav-links a{color:rgba(0,0,0,0.55)}
+.nav-links a:hover{color:var(--red)!important}
+.nav-cta{
+  background:var(--red)!important;color:var(--white)!important;
+  padding:9px 22px;border-radius:2px;
+  font-size:0.75rem!important;font-weight:600!important;
+  letter-spacing:0.1em!important;text-transform:uppercase!important;
+  transition:background 0.2s!important;
+}
+.nav-cta:hover{background:var(--red-dark)!important}
+
+/* ─── HERO ──────────────────────────────────────────────── */
+.hero{
+  position:relative;height:100vh;min-height:640px;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  overflow:hidden;
+}
+.hero-slides{position:absolute;inset:0;z-index:0}
+.hero-slide{
+  position:absolute;inset:0;
+  background-size:cover;background-position:center;
+  opacity:0;transition:opacity 1.2s ease;
+}
+.hero-slide.active{opacity:1}
+.hero-slide:nth-child(1){background-image:url('https://cdn.sumup.store/shops/08751496/settings/th1024/901009d0-af4e-4cc7-9803-cca779a71cb9.jpeg')}
+.hero-slide:nth-child(2){background-image:url('https://cdn.sumup.store/shops/08751496/settings/th1024/bbdf7130-15f2-492f-b20f-d7c152f79b74.jpeg')}
+.hero-overlay{
+  position:absolute;inset:0;z-index:1;
+  background:linear-gradient(
+    to bottom,
+    rgba(12,12,12,0.35) 0%,
+    rgba(12,12,12,0.2) 40%,
+    rgba(12,12,12,0.8) 80%,
+    rgba(12,12,12,0.96) 100%
+  );
+}
+/* subtle grain */
+.hero-grain{
+  position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0.04;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat:repeat;background-size:200px;
+}
+.hero-content{
+  position:relative;z-index:3;
+  padding:0 52px 72px;
+  max-width:900px;
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:0.7rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--red);margin-bottom:20px;
+  opacity:0;animation:fadeUp 0.8s 0.3s forwards;
+}
+.hero-eyebrow::before{content:'';width:28px;height:1px;background:var(--red)}
+.hero-h1{
+  font-family:var(--display);font-weight:900;
+  font-size:clamp(3.2rem,7vw,7rem);line-height:0.96;
+  letter-spacing:-0.03em;color:var(--white);
+  opacity:0;animation:fadeUp 1s 0.5s forwards;
+}
+.hero-h1 em{font-style:italic;color:var(--red)}
+.hero-sub{
+  margin-top:24px;max-width:480px;
+  font-size:1.05rem;font-weight:300;
+  color:rgba(255,255,255,0.65);line-height:1.7;
+  opacity:0;animation:fadeUp 0.9s 0.7s forwards;
+}
+.hero-actions{
+  margin-top:40px;display:flex;gap:14px;flex-wrap:wrap;
+  opacity:0;animation:fadeUp 0.9s 0.9s forwards;
+}
+/* hero dots */
+.hero-dots{
+  position:absolute;bottom:32px;right:52px;z-index:3;
+  display:flex;gap:8px;
+}
+.hero-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:rgba(255,255,255,0.3);cursor:pointer;transition:background 0.3s,transform 0.3s;
+}
+.hero-dot.active{background:var(--red);transform:scale(1.3)}
+
+/* ─── BUTTONS ───────────────────────────────────────────── */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--body);font-size:0.8rem;font-weight:600;
+  letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;
+  padding:14px 32px;border-radius:2px;cursor:pointer;
+  transition:background 0.25s,color 0.25s,transform 0.2s;
+  border:none;
+}
+.btn:hover{transform:translateY(-2px)}
+.btn-red{background:var(--red);color:var(--white)}
+.btn-red:hover{background:var(--red-dark)}
+.btn-outline-white{background:transparent;color:var(--white);border:1px solid rgba(255,255,255,0.35)}
+.btn-outline-white:hover{background:rgba(255,255,255,0.1);border-color:var(--white)}
+.btn-outline-dark{background:transparent;color:var(--black);border:1px solid rgba(0,0,0,0.2)}
+.btn-outline-dark:hover{border-color:var(--red);color:var(--red)}
+.btn-book{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--red);text-decoration:none;
+  padding:10px 0;border-bottom:1px solid transparent;
+  transition:border-color 0.2s,color 0.2s;
+}
+.btn-book:hover{border-color:var(--red)}
+.btn-book svg{transition:transform 0.2s}
+.btn-book:hover svg{transform:translateX(4px)}
+.service-card:hover .btn-book{color:rgba(255,255,255,0.8);border-color:transparent}
+.service-card:hover .btn-book:hover{border-color:rgba(255,255,255,0.5)}
+
+/* ─── STRIP ─────────────────────────────────────────────── */
+.strip{
+  background:var(--black);
+  display:grid;grid-template-columns:repeat(3,1fr);
+}
+.strip-item{
+  padding:52px 40px;text-align:center;
+  border-right:1px solid rgba(255,255,255,0.07);
+  opacity:0;transform:translateY(16px);transition:opacity 0.6s,transform 0.6s;
+}
+.strip-item:last-child{border-right:none}
+.strip-item.visible{opacity:1;transform:translateY(0)}
+.strip-num{
+  font-family:var(--display);font-size:clamp(3rem,5vw,4.5rem);
+  font-weight:900;color:var(--white);line-height:1;
+}
+.strip-num em{color:var(--red);font-style:normal}
+.strip-label{margin-top:8px;font-size:0.78rem;color:rgba(255,255,255,0.4);letter-spacing:0.08em;text-transform:uppercase}
+
+/* ─── SECTION HELPERS ───────────────────────────────────── */
+section{padding:110px 52px}
+.section-label{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:0.68rem;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--red);margin-bottom:16px;
+}
+.section-label::before{content:'';width:20px;height:1px;background:var(--red)}
+.section-h2{
+  font-family:var(--display);font-size:clamp(2.2rem,4vw,3.8rem);
+  font-weight:700;letter-spacing:-0.025em;line-height:1.1;
+}
+.section-body{
+  margin-top:18px;font-size:1rem;color:var(--gray);
+  max-width:520px;line-height:1.8;
+}
+.divider-red{width:44px;height:2px;background:var(--red);margin-top:24px}
+
+/* ─── SERVICES ──────────────────────────────────────────── */
+#servizi{background:var(--off-white);padding-bottom:80px}
+.services-header{text-align:center;max-width:580px;margin:0 auto 64px}
+.services-header .section-label{justify-content:center}
+.services-header .section-label::before{display:none}
+.services-header .divider-red{margin:24px auto 0}
+.services-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:3px;max-width:1200px;margin:0 auto;
+}
+.service-card{
+  position:relative;overflow:hidden;cursor:default;
+  background:var(--white);
+  opacity:0;transform:translateY(20px);
+  transition:opacity 0.6s,transform 0.6s;
+  display:flex;flex-direction:column;
+}
+.service-card.visible{opacity:1;transform:translateY(0)}
+.service-card:hover .service-img-wrap img{transform:scale(1.06)}
+.service-card:hover .service-body{background:var(--black)}
+.service-card:hover .service-title{color:var(--red)}
+.service-card:hover .service-desc{color:rgba(255,255,255,0.6)}
+.service-card:hover .service-num{color:rgba(255,255,255,0.05)}
+.service-img-wrap{height:240px;overflow:hidden;flex-shrink:0}
+.service-img-wrap img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform 0.7s cubic-bezier(.23,1,.32,1);
+  display:block;
+}
+.service-body{
+  padding:36px 32px 32px;flex:1;display:flex;flex-direction:column;
+  background:var(--white);transition:background 0.3s;position:relative;
+}
+.service-num{
+  position:absolute;top:16px;right:20px;
+  font-family:var(--display);font-size:3rem;font-weight:900;
+  color:rgba(0,0,0,0.05);line-height:1;transition:color 0.3s;pointer-events:none;
+}
+.service-title{
+  font-size:1rem;font-weight:700;color:var(--red);
+  letter-spacing:0.01em;margin-bottom:10px;transition:color 0.3s;
+  text-transform:uppercase;font-size:0.88rem;letter-spacing:0.08em;
+}
+.service-desc{
+  font-size:0.86rem;color:var(--gray);line-height:1.75;
+  flex:1;transition:color 0.3s;
+}
+.service-card .btn-book{margin-top:20px;align-self:flex-start}
+
+/* ─── ABOUT / HERO-2 ─────────────────────────────────────── */
+#chi-siamo{
+  background:var(--black);color:var(--white);
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:0;padding:0;
+}
+.about-photo{
+  position:relative;min-height:600px;overflow:hidden;
+}
+.about-photo img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  filter:brightness(0.85) contrast(1.05);
+}
+.about-photo::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to right, transparent 60%, var(--black) 100%);
+}
+.about-text{
+  padding:80px 64px;display:flex;flex-direction:column;justify-content:center;
+}
+.about-text .section-label{color:var(--red)}
+.about-text .section-h2{color:var(--white)}
+.about-text .section-body{color:rgba(255,255,255,0.55);max-width:100%}
+.about-gear{
+  margin-top:32px;padding:24px;
+  border:1px solid rgba(255,255,255,0.08);border-radius:2px;
+  background:rgba(255,255,255,0.03);
+}
+.about-gear-title{
+  font-size:0.65rem;font-weight:600;letter-spacing:0.2em;
+  text-transform:uppercase;color:var(--red);margin-bottom:12px;
+}
+.about-gear-list{
+  font-size:0.8rem;color:rgba(255,255,255,0.45);line-height:1.9;
+}
+.about-cta{margin-top:36px;display:flex;gap:12px;flex-wrap:wrap}
+.about-bars{margin-top:40px;display:flex;flex-direction:column;gap:18px}
+.abar-wrap{display:flex;flex-direction:column;gap:6px}
+.abar-label{display:flex;justify-content:space-between;font-size:0.75rem;color:rgba(255,255,255,0.4)}
+.abar-label span:last-child{color:var(--red);font-weight:600}
+.abar{height:3px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden}
+.abar-fill{height:100%;background:var(--red);width:0;border-radius:2px;transition:width 1.2s cubic-bezier(.23,1,.32,1)}
+
+/* ─── EVENTS GALLERY ────────────────────────────────────── */
+#eventi{background:var(--off-white)}
+.events-header{max-width:640px;margin:0 auto 56px;text-align:center}
+.events-header .section-label{justify-content:center}
+.events-header .section-label::before{display:none}
+.events-header .divider-red{margin:20px auto 0}
+.gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  grid-auto-rows:220px;
+  gap:3px;max-width:1200px;margin:0 auto;
+}
+.gallery-item{overflow:hidden;cursor:pointer}
+.gallery-item:nth-child(1){grid-column:span 2;grid-row:span 2}
+.gallery-item img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform 0.6s cubic-bezier(.23,1,.32,1),filter 0.4s;
+  filter:brightness(0.9) contrast(1.05) saturate(0.85);
+}
+.gallery-item:hover img{transform:scale(1.05);filter:brightness(1) contrast(1.05) saturate(1)}
+
+/* ─── EQUIPMENT ─────────────────────────────────────────── */
+#attrezzatura{background:var(--black)}
+#attrezzatura .section-label{color:var(--red)}
+#attrezzatura .section-h2{color:var(--white)}
+.equip-layout{
+  display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;
+  max-width:1200px;margin:56px auto 0;
+}
+.equip-photos{
+  display:grid;grid-template-columns:1fr 1fr;grid-template-rows:220px 220px;gap:3px;
+}
+.equip-photos img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  filter:brightness(0.85) saturate(0.8) contrast(1.1);
+  transition:filter 0.4s;
+}
+.equip-photos img:hover{filter:brightness(1) saturate(1) contrast(1.05)}
+.equip-photos img:first-child{grid-row:span 2}
+.equip-list{display:flex;flex-direction:column;gap:2px;padding-top:8px}
+.equip-item{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.06);
+  font-size:0.85rem;color:rgba(255,255,255,0.5);
+}
+.equip-item::before{
+  content:'';width:5px;height:5px;border-radius:50%;
+  background:var(--red);flex-shrink:0;
+}
+.equip-item strong{color:var(--white);font-weight:500}
+
+/* ─── TESTIMONIALS ──────────────────────────────────────── */
+#testimonianze{background:var(--off-white)}
+.test-header{text-align:center;max-width:500px;margin:0 auto 64px}
+.test-header .section-label{justify-content:center}
+.test-header .section-label::before{display:none}
+.test-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;max-width:1200px;margin:0 auto}
+.test-card{
+  background:var(--white);padding:40px 36px;
+  opacity:0;transform:translateY(20px);transition:opacity 0.6s,transform 0.6s;
+}
+.test-card.visible{opacity:1;transform:translateY(0)}
+.test-q{font-family:var(--display);font-size:3rem;color:var(--red);line-height:1;margin-bottom:14px}
+.test-text{font-size:0.92rem;line-height:1.8;font-style:italic;color:var(--black)}
+.test-author{margin-top:24px;display:flex;align-items:center;gap:12px}
+.test-av{
+  width:38px;height:38px;border-radius:50%;background:var(--black);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--display);font-size:0.9rem;color:var(--white);font-weight:700;
+}
+.test-name{font-weight:600;font-size:0.85rem}
+.test-role{font-size:0.75rem;color:var(--gray)}
+
+/* ─── CONTATTI / CTA ────────────────────────────────────── */
+#contatti{
+  background:var(--black);
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:80px;align-items:center;
+}
+#contatti .section-label{color:var(--red)}
+#contatti .section-h2{color:var(--white)}
+#contatti .section-body{color:rgba(255,255,255,0.5);max-width:100%}
+.contact-details{
+  margin-top:36px;display:flex;flex-direction:column;gap:16px;
+}
+.contact-row{display:flex;align-items:flex-start;gap:14px}
+.contact-icon{
+  width:36px;height:36px;border:1px solid rgba(255,255,255,0.1);
+  border-radius:2px;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.contact-label{font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:2px}
+.contact-val{font-size:0.88rem;color:var(--white)}
+.contact-val a{color:var(--white);text-decoration:none;transition:color 0.2s}
+.contact-val a:hover{color:var(--red)}
+.hours-grid{
+  margin-top:4px;display:grid;grid-template-columns:1fr 1fr;gap:4px 24px;
+  font-size:0.8rem;color:rgba(255,255,255,0.4);
+}
+.hours-day{color:rgba(255,255,255,0.7)}
+.contact-cta-box{
+  background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);
+  padding:52px 48px;display:flex;flex-direction:column;align-items:flex-start;gap:14px;
+}
+.contact-cta-box .section-h2{font-size:2.2rem}
+.contact-cta-box p{font-size:0.95rem;color:rgba(255,255,255,0.5);line-height:1.75}
+.cta-note-small{font-size:0.72rem;color:rgba(255,255,255,0.25);letter-spacing:0.06em}
+
+/* ─── FOOTER ────────────────────────────────────────────── */
+footer{
+  background:rgba(0,0,0,0.98);
+  padding:36px 52px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:20px;
+  border-top:1px solid rgba(255,255,255,0.05);
+}
+.footer-left{display:flex;align-items:center;gap:14px}
+.footer-logo-img{height:28px;opacity:0.75;filter:brightness(2)}
+.footer-brand{font-family:var(--display);font-size:0.9rem;color:rgba(255,255,255,0.5)}
+.footer-links{display:flex;gap:24px;list-style:none}
+.footer-links a{font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.25);text-decoration:none;transition:color 0.2s}
+.footer-links a:hover{color:var(--red)}
+.footer-copy{font-size:0.72rem;color:rgba(255,255,255,0.2)}
+
+/* ─── ANIMATIONS ────────────────────────────────────────── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
+
+/* ─── RESPONSIVE ────────────────────────────────────────── */
+@media(max-width:1024px){
+  .services-grid{grid-template-columns:repeat(2,1fr)}
+  .gallery-grid{grid-template-columns:repeat(2,1fr)}
+  .gallery-item:nth-child(1){grid-column:span 1;grid-row:span 1}
+  #chi-siamo{grid-template-columns:1fr}
+  .about-photo{min-height:350px}
+  .equip-layout{grid-template-columns:1fr;gap:48px}
+  .test-grid{grid-template-columns:1fr}
+  #contatti{grid-template-columns:1fr;gap:40px}
+}
+@media(max-width:768px){
+  nav{padding:0 20px}
+  .nav-links{display:none}
+  section{padding:72px 24px}
+  .hero-content{padding:0 24px 56px}
+  .services-grid{grid-template-columns:1fr}
+  .strip{grid-template-columns:1fr}
+  .strip-item{border-right:none;border-bottom:1px solid rgba(255,255,255,0.06)}
+  .strip-item:last-child{border-bottom:none}
+  .about-text{padding:52px 28px}
+  .gallery-grid{grid-template-columns:1fr 1fr}
+  .equip-photos{grid-template-columns:1fr 1fr;grid-template-rows:160px 160px}
+  .equip-photos img:first-child{grid-row:span 1}
+  footer{flex-direction:column;text-align:center}
+  .contact-cta-box{padding:36px 24px}
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ───────────────────────────────────────────── -->
+<nav id="mainNav">
+  <a href="#" class="nav-logo-wrap">
+    <img class="nav-logo-img" src="https://cdn.sumup.store/shops/08751496/settings/th480/4fe65c86-3237-4f71-bcf7-a812b68b973d.png" alt="DVS logo"/>
+    <span class="nav-logo-text">Davide Vaccari Studios</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#servizi">Servizi</a></li>
+    <li><a href="#chi-siamo">Chi Siamo</a></li>
+    <li><a href="#eventi">Eventi</a></li>
+    <li><a href="#attrezzatura">Studio</a></li>
+    <li><a href="#contatti">Contatti</a></li>
+    <li><a href="https://cal.com/davide-vaccari-studios-prenotazionionline" target="_blank" class="nav-cta">Prenota</a></li>
+  </ul>
+</nav>
+
+<!-- ── HERO ──────────────────────────────────────────── -->
+<section class="hero" id="home">
+  <div class="hero-slides">
+    <div class="hero-slide active"></div>
+    <div class="hero-slide"></div>
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-grain"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Modena · Dal 2004</p>
+    <h1 class="hero-h1">Davide<br>Vaccari<br><em>Studios</em></h1>
+    <p class="hero-sub">Formazione musicale, produzione, liuteria e comunicazione. Il tuo percorso nel mondo della musica inizia qui.</p>
+    <div class="hero-actions">
+      <a href="https://cal.com/davide-vaccari-studios-prenotazionionline" target="_blank" class="btn btn-red">Prenota ora</a>
+      <a href="#servizi" class="btn btn-outline-white">I nostri servizi</a>
+    </div>
+  </div>
+  <div class="hero-dots" id="heroDots">
+    <div class="hero-dot active" data-idx="0"></div>
+    <div class="hero-dot" data-idx="1"></div>
+  </div>
+</section>
+
+<!-- ── STRIP ─────────────────────────────────────────── -->
+<div class="strip" id="strip">
+  <div class="strip-item">
+    <div class="strip-num">20<em>+</em></div>
+    <div class="strip-label">Anni di esperienza</div>
+  </div>
+  <div class="strip-item" style="transition-delay:0.15s">
+    <div class="strip-num">200<em>+</em></div>
+    <div class="strip-label">Clienti soddisfatti</div>
+  </div>
+  <div class="strip-item" style="transition-delay:0.3s">
+    <div class="strip-num">5<em>★</em></div>
+    <div class="strip-label">Stelle su 5 dai clienti</div>
+  </div>
+</div>
+
+<!-- ── SERVIZI ────────────────────────────────────────── -->
+<section id="servizi">
+  <div class="services-header">
+    <div class="section-label">I Nostri Servizi</div>
+    <h2 class="section-h2">Tutto ciò di cui hai bisogno, in un unico studio.</h2>
+    <div class="divider-red"></div>
+  </div>
+
+  <div class="services-grid">
+
+    <!-- 01 Corsi -->
+    <div class="service-card">
+      <div class="service-img-wrap">
+        <img src="https://cdn.sumup.store/shops/08751496/settings/th1024/d609097b-fae6-464f-a367-6964cd7a49af.jpeg" alt="Corsi di strumenti musicali" loading="lazy"/>
+      </div>
+      <div class="service-body">
+        <div class="service-num">01</div>
+        <div class="service-title">Corso di Strumenti Musicali</div>
+        <p class="service-desc">Il nostro obiettivo è formare l'allievo tramite un percorso didattico su misura, con un approccio accademico o più leggero, fatto di empatia e divertimento per un apprendimento più consistente e duraturo.</p>
+        <a href="https://cal.com/davide-vaccari-studios-prenotazionionline" target="_blank" class="btn-book">
+          Contattaci
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- 02 Produzione -->
+    <div class="service-card">
+      <div class="service-img-wrap">
+        <img src="https://cdn.sumup.store/shops/08751496/settings/th1024/2b8da4fb-9b2c-4257-a765-fc6d561ee75c.jpeg" alt="Produzione musicale" loading="lazy"/>
+      </div>
+      <div class="service-body">
+        <div class="service-num">02</div>
+        <div class="service-title">Produzione Musicale</div>
+        <p class="service-desc">Consulenza artistica, produzioni audio, arrangiamenti, vocal production, mix & master professionali e distribuzione. Un team da 20 anni nel settore che ti accompagna step by step verso il tuo massimo potenziale.</p>
+        <a href="https://cal.com/davide-vaccari-studios-prenotazionionline" target="_blank" class="btn-book">
+          Contattaci
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- 03 Band Coaching -->
+    <div class="service-card">
+      <div class="service-img-wrap">
+        <img src="https://cdn.sumup.store/shops/08751496/settings/th1024/f75af426-5940-4364-a57f-5a9da9ef30d9.jpeg" alt="Band Coaching Lab" loading="lazy"/>
+      </div>
+      <div class="service-body">
+        <div class="service-num">03</div>
+        <div class="service-title">Band Coaching Lab</div>
+        <p class="service-desc">Percorso personalizzato per band guidato da un musicista e producer formato al Berklee College of Music. Lavoriamo su arrangiamento, scrittura, dinamiche e qualità della performance direttamente in sala prove.</p>
+        <a href="https://cal.com/davide-vaccari-studios-prenotazionionline" target="_blank" class="btn-book">
+          Contattaci
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- 04 Liuteria -->
+    <div class="service-card">
+      <div class="service-img-wrap">
+        <img src="https://cdn.sumup.store/shops/08751496/settings/th1024/31256ceb-2f4b-4f0b-a11d-30ebed4bc4c1.jpeg" alt="Laboratorio di Liuteria" loading="lazy"/>
+      </div>
+      <div class="service-body">
+        <div class="service-num">04</div>
+        <div class="service-title">Assistenza di Liuteria</div>
+        <p class="service-desc">Pulizia e set-up completo, cambio corde, elettronica e pick-up, rettifica e ritastaggio della tastiera, incollaggi manici, ponti e tavole. Il tuo strumento tornerà a suonare come nuovo.</p>
+        <a href="https://cal.com/davide-vaccari-studios-prenotazionionline" target="_blank" class="btn-book">
+          Contattaci
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- 05 Marketing -->
+    <div class="service-card">
+      <div class="service-img-wrap">
+        <img src="https://cdn.sumup.store/shops/08751496/settings/th1024/90549f58-c958-4ac0-82ea-e552ef6c70e1.jpeg" alt="Marketing e Comunicazione" loading="lazy"/>
+      </div>
+      <div class="service-body">
+        <div class="service-num">05</div>
+        <div class="service-title">Marketing e Comunicazione</div>
+        <p class="service-desc">Social media management, creazione brand musicale, fotografia professionale per eventi e aziende, riprese video e realizzazione grafiche, loghi e locandine. La tua identità artistica, curata al dettaglio.</p>
+        <a href="https://cal.com/davide-vaccari-studios-prenotazionionline" target="_blank" class="btn-book">
+          Contattaci
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- 06 Sound Design -->
+    <div class="service-card">
+      <div class="service-img-wrap">
+        <img src="https://cdn.sumup.store/shops/08751496/settings/th1024/46516a95-3f50-4841-b0d4-d08cda86eaca.jpeg" alt="Sound Design" loading="lazy"/>
+      </div>
+      <div class="service-body">
+        <div class="service-num">06</div>
+        <div class="service-title">Sound Design</div>
+        <p class="service-desc">I nostri sound engineer ti guidano nella definizione del suono ideale per il tuo progetto. Brani esclusivi pensati su misura per valorizzare la tua attività — hotel, ristoranti, eventi, brand commerciali.</p>
+        <a href="https://cal.com/davide-vaccari-studios-prenotazionionline" target="_blank" class="btn-book">
+          Contattaci
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── CHI SIAMO ──────────────────────────────────────── -->
+<section id="chi-siamo" style="padding:0">
+  <div class="about-photo">
+    <img src="https://cdn.sumup.store/shops/08751496/settings/th1024/bbdf7130-15f2-492f-b20f-d7c152f79b74.jpeg" alt="Davide Vaccari Studios"/>
+  </div>
+  <div class="about-text">
+    <div class="section-label">Chi Siamo</div>
+    <h2 class="section-h2">Vent'anni di musica, una passione senza fine.</h2>
+    <p class="section-body">Siamo un team di professionisti del settore da oltre 20 anni. Mettiamo a disposizione tutte le nostre competenze ed esperienze per accompagnare ogni cliente con percorsi formativi ad hoc, elevandoti al massimo potenziale.</p>
+
+    <div class="about-bars" id="aboutBars">
+      <div class="abar-wrap">
+        <div class="abar-label"><span>Soddisfazione clienti</span><span>5★ / 5</span></div>
+        <div class="abar"><div class="abar-fill" data-w="100"></div></div>
+      </div>
+      <div class="abar-wrap">
+        <div class="abar-label"><span>Clienti fidelizzati</span><span>200+</span></div>
+        <div class="abar"><div class="abar-fill" data-w="82"></div></div>
+      </div>
+      <div class="abar-wrap">
+        <div class="abar-label"><span>Anni di esperienza</span><span>20+</span></div>
+        <div class="abar"><div class="abar-fill" data-w="65"></div></div>
+      </div>
+    </div>
+
+    <div class="about-gear">
+      <div class="about-gear-title">Attrezzatura selezionata</div>
+      <div class="about-gear-list">Apollo Twin · Heritage Audio HA-73 EQ · Warm Audio WA76 · Telefunken TF51 · Neumann TLM102 · Shure SM7b · Friedman Runt 50 · Quad Cortex · Adam Audio A77H · MacBook Pro M1 Max</div>
+    </div>
+
+    <div class="about-cta">
+      <a href="https://cal.com/davide-vaccari-studios-prenotazionionline" target="_blank" class="btn btn-red">Prenota ora</a>
+      <a href="#attrezzatura" class="btn btn-outline-white">Vedi lo studio</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── EVENTI ─────────────────────────────────────────── -->
+<section id="eventi">
+  <div class="events-header">
+    <div class="section-label">I Nostri Eventi</div>
+    <h2 class="section-h2">Masterclass &amp; Workshops</h2>
+    <p class="section-body" style="margin:14px auto 0;text-align:center">Masterclass con artisti di livello internazionale. Eugenio Cattini — collaboratore di Damiano David dei Måneskin, Lazza, Marracash, Francesca Michielin.</p>
+    <div class="divider-red"></div>
+  </div>
+  <div class="gallery-grid" id="gallery">
+    <div class="gallery-item"><img src="https://cdn.sumup.store/shops/08751496/settings/th1024/d112fac2-0f9d-47dc-bfc2-df023769b2dd.jpeg" alt="Evento DVS" loading="lazy"/></div>
+    <div class="gallery-item"><img src="https://cdn.sumup.store/shops/08751496/settings/th1024/845b17ba-929a-4c3c-9490-92478ff2fe94.jpeg" alt="Evento DVS" loading="lazy"/></div>
+    <div class="gallery-item"><img src="https://cdn.sumup.store/shops/08751496/settings/th1024/381476ae-4b70-4bca-9a04-ab70c6648a4a.jpeg" alt="Evento DVS" loading="lazy"/></div>
+    <div class="gallery-item"><img src="https://cdn.sumup.store/shops/08751496/settings/th1024/66740b68-71da-48d6-8433-59145f0b5212.jpeg" alt="Evento DVS" loading="lazy"/></div>
+    <div class="gallery-item"><img src="https://cdn.sumup.store/shops/08751496/settings/th1024/5f8ca0bc-a8d4-4843-83fb-042688beb6de.jpeg" alt="Evento DVS" loading="lazy"/></div>
+    <div class="gallery-item"><img src="https://cdn.sumup.store/shops/08751496/settings/th1024/4b425ea0-8410-478f-ad1d-ce867522b466.jpeg" alt="Evento DVS" loading="lazy"/></div>
+    <div class="gallery-item"><img src="https://cdn.sumup.store/shops/08751496/settings/th1024/a13762b3-e49a-4b66-98e4-a3db716a4a6a.jpeg" alt="Evento DVS" loading="lazy"/></div>
+    <div class="gallery-item"><img src="https://cdn.sumup.store/shops/08751496/settings/th1024/4431efaa-b664-4bb5-bb61-4a931fa55746.jpeg" alt="Evento DVS" loading="lazy"/></div>
+  </div>
+</section>
+
+<!-- ── ATTREZZATURA ────────────────────────────────────── -->
+<section id="attrezzatura">
+  <div class="section-label">Lo Studio</div>
+  <h2 class="section-h2" style="color:var(--white)">Attrezzatura di livello professionale.</h2>
+  <p class="section-body" style="color:rgba(255,255,255,0.45)">I nostri strumenti sono stati scelti con cura per offrire un'esperienza di altissimo livello.</p>
+
+  <div class="equip-layout">
+    <div class="equip-photos">
+      <img src="https://cdn.sumup.store/shops/08751496/settings/th1024/c6787c64-6d06-44ff-a418-1524bcd20711.jpeg" alt="Studio gear" loading="lazy"/>
+      <img src="https://cdn.sumup.store/shops/08751496/settings/th1024/4eb6b7f5-3fa7-4592-b8c3-dcb6c6d3eb3a.jpeg" alt="Studio gear" loading="lazy"/>
+      <img src="https://cdn.sumup.store/shops/08751496/settings/th1024/05a739f4-5801-4e47-9fec-a0cd114d4707.jpeg" alt="Studio gear" loading="lazy"/>
+    </div>
+    <div class="equip-list">
+      <div class="equip-item"><strong>Scheda Audio</strong> Apollo Twin</div>
+      <div class="equip-item"><strong>Pre-Amp</strong> Heritage Audio HA-73 EQ</div>
+      <div class="equip-item"><strong>Compressore</strong> Warm Audio WA76</div>
+      <div class="equip-item"><strong>Microfoni</strong> Telefunken TF51 · Neumann TLM102 · Shure SM57 · SM7b</div>
+      <div class="equip-item"><strong>Amp</strong> Friedman Runt 50 Head · M-tech Audio Cabinet</div>
+      <div class="equip-item"><strong>Modeller</strong> Quad Cortex</div>
+      <div class="equip-item"><strong>Monitor</strong> Adam Audio A77H · Yamaha HS5</div>
+      <div class="equip-item"><strong>DAW</strong> MacBook Pro M1 Max</div>
+      <div class="equip-item"><strong>Chitarre</strong> Fender Custom Shop USA · PRS Custom 24 · Gibson Les Paul '91 · Music Man JP-BFR</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIANZE ──────────────────────────────────── -->
+<section id="testimonianze">
+  <div class="test-header">
+    <div class="section-label">Testimonianze</div>
+    <h2 class="section-h2">Cosa dicono di noi.</h2>
+  </div>
+  <div class="test-grid">
+    <div class="test-card">
+      <div class="test-q">"</div>
+      <p class="test-text">Davide è un insegnante eccezionale. In pochi mesi ho fatto più progressi che in anni di lezioni tradizionali. Competenza, pazienza e un metodo che funziona davvero.</p>
+      <div class="test-author">
+        <div class="test-av">LM</div>
+        <div><div class="test-name">Luca M.</div><div class="test-role">Studente di Chitarra</div></div>
+      </div>
+    </div>
+    <div class="test-card">
+      <div class="test-q">"</div>
+      <p class="test-text">Il Band Coaching Lab ha trasformato il nostro suono. Ora abbiamo una direzione artistica chiara e una coesione sul palco che prima non avevamo. Risultati concreti, subito.</p>
+      <div class="test-author">
+        <div class="test-av">SR</div>
+        <div><div class="test-name">Sara R.</div><div class="test-role">Frontwoman, The Echoes</div></div>
+      </div>
+    </div>
+    <div class="test-card">
+      <div class="test-q">"</div>
+      <p class="test-text">La produzione del mio EP è stata curata nei minimi dettagli. Il risultato ha superato ogni aspettativa. Professionalismo e passione a 5 stelle, senza alcun dubbio.</p>
+      <div class="test-author">
+        <div class="test-av">MT</div>
+        <div><div class="test-name">Marco T.</div><div class="test-role">Artista Indipendente</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTATTI ───────────────────────────────────────── -->
+<section id="contatti">
+  <div>
+    <div class="section-label">Dove Siamo</div>
+    <h2 class="section-h2" style="color:var(--white)">Vieni a trovarci a Modena.</h2>
+    <p class="section-body">Siamo in Strada Morane, Modena. Contattaci per informazioni o prenota direttamente online — la prima consulenza è gratuita.</p>
+
+    <div class="contact-details">
+      <div class="contact-row">
+        <div class="contact-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1a5 5 0 015 5c0 3.5-5 9-5 9S3 9.5 3 6a5 5 0 015-5z" stroke="#c8000a" stroke-width="1.2"/><circle cx="8" cy="6" r="1.5" stroke="#c8000a" stroke-width="1.2"/></svg>
+        </div>
+        <div>
+          <div class="contact-label">Indirizzo</div>
+          <div class="contact-val">Strada Morane, Modena MO, Italia</div>
+        </div>
+      </div>
+      <div class="contact-row">
+        <div class="contact-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 3h12v10H2z" stroke="#c8000a" stroke-width="1.2" rx="1"/><path d="M2 3l6 5 6-5" stroke="#c8000a" stroke-width="1.2"/></svg>
+        </div>
+        <div>
+          <div class="contact-label">Email</div>
+          <div class="contact-val"><a href="mailto:davidevaccaristudios@gmail.com">davidevaccaristudios@gmail.com</a></div>
+        </div>
+      </div>
+      <div class="contact-row">
+        <div class="contact-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 2h3l1.5 3.5L6 7s1 2 3 3l1.5-1.5L14 10v3s-2 1-4 0C5 11 2 6 2 4c0-1 1-2 1-2z" stroke="#c8000a" stroke-width="1.2"/></svg>
+        </div>
+        <div>
+          <div class="contact-label">Telefono</div>
+          <div class="contact-val"><a href="tel:+393316458566">+39 331 645 8566</a></div>
+        </div>
+      </div>
+      <div class="contact-row">
+        <div class="contact-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5.5" stroke="#c8000a" stroke-width="1.2"/><path d="M8 4v4l2.5 1.5" stroke="#c8000a" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </div>
+        <div>
+          <div class="contact-label">Orari</div>
+          <div class="hours-grid">
+            <span class="hours-day">Lun – Ven</span><span>10:00 – 21:00</span>
+            <span class="hours-day">Sabato</span><span>10:00 – 13:00</span>
+            <span class="hours-day">Domenica</span><span>Chiuso</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-cta-box">
+    <div class="section-label">Prenota Online</div>
+    <h2 class="section-h2" style="color:var(--white)">Pronto a fare il prossimo passo?</h2>
+    <p>Scegli il servizio che fa per te e prenota in pochi secondi tramite il nostro calendario online. Nessun impegno, prima consulenza gratuita.</p>
+    <a href="https://cal.com/davide-vaccari-studios-prenotazionionline" target="_blank" class="btn btn-red" style="margin-top:8px">📅 &nbsp;Prenota su Cal.com</a>
+    <span class="cta-note-small">Prima consulenza gratuita · Nessun impegno</span>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────────── -->
+<footer>
+  <div class="footer-left">
+    <img class="footer-logo-img" src="https://cdn.sumup.store/shops/08751496/settings/th480/4fe65c86-3237-4f71-bcf7-a812b68b973d.png" alt="DVS"/>
+    <span class="footer-brand">Davide Vaccari Studios</span>
+  </div>
+  <ul class="footer-links">
+    <li><a href="#servizi">Servizi</a></li>
+    <li><a href="#chi-siamo">Chi Siamo</a></li>
+    <li><a href="#eventi">Eventi</a></li>
+    <li><a href="#attrezzatura">Studio</a></li>
+    <li><a href="https://cal.com/davide-vaccari-studios-prenotazionionline" target="_blank">Prenota</a></li>
+  </ul>
+  <p class="footer-copy">© 2025 Davide Vaccari Studios · P.IVA 03987020363</p>
+</footer>
+
+<script>
+/* ── Hero Slideshow ── */
+const slides = document.querySelectorAll('.hero-slide');
+const dots = document.querySelectorAll('.hero-dot');
+let current = 0, slideTimer;
+
+function goTo(idx) {
+  slides[current].classList.remove('active');
+  dots[current].classList.remove('active');
+  current = idx;
+  slides[current].classList.add('active');
+  dots[current].classList.add('active');
+}
+
+function nextSlide() { goTo((current + 1) % slides.length); }
+
+function startTimer() { slideTimer = setInterval(nextSlide, 5000); }
+function stopTimer()  { clearInterval(slideTimer); }
+
+dots.forEach(d => d.addEventListener('click', () => {
+  stopTimer(); goTo(+d.dataset.idx); startTimer();
+}));
+startTimer();
+
+/* ── Nav color on scroll ── */
+const nav = document.getElementById('mainNav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('light', window.scrollY > window.innerHeight * 0.85);
+});
+
+/* ── IntersectionObserver ── */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.strip-item, .service-card, .test-card').forEach(el => io.observe(el));
+
+/* stagger service cards */
+document.querySelectorAll('.service-card').forEach((c, i) => {
+  c.style.transitionDelay = `${i * 0.07}s`;
+});
+
+/* ── About bars ── */
+const barsSection = document.getElementById('aboutBars');
+const barIo = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.abar-fill').forEach((f, i) => {
+        setTimeout(() => { f.style.width = f.dataset.w + '%'; }, i * 200);
+      });
+    }
+  });
+}, { threshold: 0.4 });
+if (barsSection) barIo.observe(barsSection);
+</script>
+</body>
+</html>
